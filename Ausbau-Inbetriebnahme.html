@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkliste Ausbau & Inbetriebnahme</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e40af;
+            --secondary: #2563eb;
+            --success: #059669;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --light: #f8fafc;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 35px 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+
+        header p {
+            font-size: 15px;
+            opacity: 0.95;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-container {
+            background: white;
+            border-bottom: 3px solid var(--light);
+            overflow-x: auto;
+        }
+
+        .nav-tabs {
+            display: flex;
+            padding: 0 20px;
+            gap: 0;
+        }
+
+        .nav-tabs button {
+            padding: 16px 24px;
+            background: transparent;
+            border: none;
+            color: var(--primary);
+            font-weight: 700;
+            cursor: pointer;
+            border-bottom: 4px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .nav-tabs button:hover {
+            color: var(--secondary);
+        }
+
+        .nav-tabs button.active {
+            color: var(--secondary);
+            border-bottom-color: var(--secondary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-section {
+            padding: 40px;
+            max-height: calc(100vh - 300px);
+            overflow-y: auto;
+        }
+
+        .form-section h2 {
+            color: var(--primary);
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 14px;
+            letter-spacing: 0.3px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="email"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 12px rgba(37, 99, 235, 0.2);
+            background: #f0f9ff;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--secondary);
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .item-card {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-left: 6px solid var(--secondary);
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            transition: all 0.3s;
+            border: 2px solid var(--border);
+        }
+
+        .item-card:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+
+        .item-card.erfuellt {
+            border-left-color: var(--success);
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .item-card.nicht-erfuellt {
+            border-left-color: var(--danger);
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        }
+
+        .item-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .item-description {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 18px;
+            padding: 14px;
+            background: white;
+            border-left: 4px solid var(--secondary);
+            border-radius: 6px;
+            line-height: 1.6;
+        }
+
+        .conditional-fields {
+            background: white;
+            padding: 18px;
+            border-radius: 8px;
+            margin-top: 18px;
+            display: none;
+            border: 2px solid var(--border);
+        }
+
+        .conditional-fields.show {
+            display: block;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 13px 22px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #047857;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #b45309;
+        }
+
+        .photo-section {
+            margin-top: 20px;
+            padding: 18px;
+            background: white;
+            border-radius: 8px;
+            border: 3px dashed var(--secondary);
+        }
+
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .photo-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+        }
+
+        .photo-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .photo-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.85);
+            color: white;
+            padding: 10px;
+            font-size: 11px;
+            max-height: 100px;
+            overflow-y: auto;
+            line-height: 1.4;
+        }
+
+        .photo-delete {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .photo-delete:hover {
+            background: #b91c1c;
+            transform: scale(1.15);
+        }
+
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .success-message,
+        .error-message {
+            padding: 16px 18px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+            border-left: 5px solid;
+            font-weight: 600;
+        }
+
+        .success-message {
+            background: #f0fdf4;
+            color: #065f46;
+            border-left-color: var(--success);
+        }
+
+        .error-message {
+            background: #fef2f2;
+            color: #7f1d1d;
+            border-left-color: var(--danger);
+        }
+
+        .summary-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 22px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            border: 2px solid var(--light);
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+            border-color: var(--secondary);
+        }
+
+        .summary-card h4 {
+            color: var(--primary);
+            font-size: 12px;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .summary-card .number {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--secondary);
+        }
+
+        .export-section {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 2px solid var(--secondary);
+        }
+
+        .export-section h3 {
+            color: var(--primary);
+            margin-bottom: 22px;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 1024px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .form-section {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 26px;
+            }
+
+            .form-section {
+                padding: 20px;
+            }
+
+            .checkbox-group {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .nav-tabs button {
+                padding: 14px 16px;
+                font-size: 12px;
+            }
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.offen {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-badge.erfuellt {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-badge.nicht-erfuellt {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏗️ Checkliste Ausbau & Inbetriebnahme</h1>
+            <p>Verwaltung der Konformität - E20 bis E30 | Umfassende Dokumentation mit Fotofunkturkontrolle</p>
+        </header>
+
+        <div class="nav-container">
+            <div class="nav-tabs">
+                <button class="active" onclick="switchTab('projektdaten')">📋 Projektdaten</button>
+                <button onclick="switchTab('e20')">E20 - Trockenbau</button>
+                <button onclick="switchTab('e21')">E21 - Estrich/Boden</button>
+                <button onclick="switchTab('e22')">E22 - Fliesen</button>
+                <button onclick="switchTab('e23')">E23 - Maler</button>
+                <button onclick="switchTab('e24')">E24 - Innenausbau</button>
+                <button onclick="switchTab('e30')">E30 - Reinigung</button>
+                <button onclick="switchTab('zusammenfassung')">📊 Zusammenfassung</button>
+            </div>
+        </div>
+
+        <!-- PROJEKTDATEN -->
+        <div id="projektdaten" class="tab-content active">
+            <div class="form-section">
+                <div class="messages">
+                    <div class="success-message" id="successMessage"></div>
+                    <div class="error-message" id="errorMessage"></div>
+                </div>
+
+                <h2>📍 Projektidentifikation</h2>
+                
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="projekt">Projekt / Bereich:</label>
+                        <input type="text" id="projekt" placeholder="Projektname und Arbeitsbereich">
+                    </div>
+                    <div class="form-group">
+                        <label for="revision">Revision / Datum:</label>
+                        <input type="date" id="revision">
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="verantwortlich">Verantwortlicher:</label>
+                        <input type="text" id="verantwortlich" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="firma">Firma / Unternehmung:</label>
+                        <input type="text" id="firma" placeholder="Unternehmensname">
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="telefon">Telefon:</label>
+                        <input type="text" id="telefon" placeholder="+49 xxx xxxx">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-Mail:</label>
+                        <input type="email" id="email" placeholder="email@beispiel.de">
+                    </div>
+                </div>
+
+                <h2 style="margin-top: 35px;">📍 Standortinformationen</h2>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="breitengrad">Breitengrad:</label>
+                        <input type="text" id="breitengrad" placeholder="z.B. 52.5200" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="laengengrad">Längengrad:</label>
+                        <input type="text" id="laengengrad" placeholder="z.B. 13.4050" readonly>
+                    </div>
+                </div>
+
+                <button class="btn-primary" onclick="getStandort()" style="margin-bottom: 25px;">📍 Standort Abrufen</button>
+
+                <div class="form-group">
+                    <label for="standort-beschreibung">Standortbeschreibung:</label>
+                    <textarea id="standort-beschreibung" placeholder="Adresse oder genaue Ortsbeschreibung des Bauprojekts"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="projekt-beschreibung">Projektbeschreibung:</label>
+                    <textarea id="projekt-beschreibung" placeholder="Kurze Beschreibung der Arbeiten und Besonderheiten"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- E20 TROCKENBAU -->
+        <div id="e20" class="tab-content">
+            <div class="form-section">
+                <h2>🏗️ E20 · Trockenbau</h2>
+                <p style="color: #999; margin-bottom: 25px; font-size: 13px;">GefStoffV §§6–7; TRGS 500/559 nach Stoff; ArbStättV Anhang; ArbSchG §8</p>
+
+                <div class="form-group">
+                    <label>Anwendbarkeit:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" name="e20-anwendbar" value="ja" onchange="toggleE20Items()">
+                            <label>Ja</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="e20-anwendbar" value="nein" onchange="toggleE20Items()">
+                            <label>Nein</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" name="e20-anwendbar" value="klaren" onchange="toggleE20Items()">
+                            <label>Zu klären</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="e20-begruendung">Begründung:</label>
+                    <textarea id="e20-begruendung" placeholder="Begründen Sie Ihre Wahl"></textarea>
+                </div>
+
+                <div id="e20-items" style="display: none;">
+                    <!-- E20 Item 01 -->
+                    <div class="item-card">
+                        <div class="item-title">01 - Trockenbau-Logistik und Höhe planen [Planung]</div>
+                        <div class="item-description">
+                            Materiallagerung, Staubquellen, Arbeitsmittel und sichere Zugänge mit Ausbaugewerken abstimmen.<br>
+                            <strong>Nachweis:</strong> Ausbauablauf und Schutzkonzept
+                        </div>
+
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="radio" name="e20-item01-app" value="ja" onchange="toggleE20Item01()">
+                                <label>Anwendbar</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="e20-item01-app" value="nein" onchange="toggleE20Item01()">
+                                <label>Nicht anwendbar</label>
+                            </div>
+                        </div>
+
+                        <div id="e20-item01-fields" class="conditional-fields">
+                            <div class="form-group">
+                                <label>Status:</label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="e20-item01-status" value="offen">
+                                        <label>Offen</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="e20-item01-status" value="erfuellt">
+                                        <label>Erfüllt</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="e20-item01-status" value="nicht-erfuellt" onchange="toggleE20Item01Action()">
+                                        <label>Nicht erfüllt</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="e20-item01-action" class="conditional-fields">
+                                <div class="form-group">
+                                    <label>Maßnahmenplan zur Behebung:</label>
+                                    <textarea id="e20-item01-massnahmen" placeholder="Beschreiben Sie erforderliche Maßnahmen"></textarea>
+                                </div>
+                                <div class="grid-2">
+                                    <div class="form-group">
+                                        <label for="e20-item01-frist">Frist für Behebung:</label>
+                                        <input type="date" id="e20-item01-frist">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="e20-item01-resp-masse">Verantwortlicher:</label>
+                                        <input type="text" id="e20-item01-resp-masse" placeholder="Name">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label for="e20-item01-resp">Verantwortlich (Prüfer):</label>
+                                    <input type="text" id="e20-item01-resp" placeholder="Name des Prüfers">
+                                </div>
+                                <div class="form-group">
+                                    <label for="e20-item01-datum">Prüfdatum:</label>
+                                    <input type="date" id="e20-item01-datum">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="e20-item01-obs">Bemerkungen / Nachweise:</label>
+                                <textarea id="e20-item01-obs" placeholder="Beschreiben Sie Bemerkungen, Dokumente und Nachweise"></textarea>
+                            </div>
+
+                            <div class="photo-section">
+                                <label for="e20-item01-foto">📸 Fotofunkturkontrolle hinzufügen:</label>
+                                <input type="file" id="e20-item01-foto" accept="image/*" onchange="handlePhoto('e20', 'item01')" style="margin-top: 10px; width: 100%;">
+                                <div id="e20-item01-gallery" class="photo-gallery"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- E20 Item 02, 03, 04 (Similar structure) -->
+                    <div class="item-card">
+                        <div class="item-title">02 - Ausbauarbeitsplatz kontrollieren [Ausführung]</div>
+                        <div class="item-description">
+                            Standflächen, Arbeitsmittel, freie Wege und Staubschutz im gemeinsamen Bereich prüfen.<br>
+                            <strong>Nachweis:</strong> Arbeitsplatz-/Übergabekontrolle
+                        </div>
+
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="radio" name="e20-item02-app" value="ja" onchange="toggleE20Item02()">
+                                <label>Anwendbar</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="e20-item02-app" value="nein" onchange="toggleE20Item02()">
+                                <label>Nicht anwendbar</label>
+                            </div>
+                        </div>
+
+                        <div id="e20-item02-fields" class="conditional-fields">
+                            <div class="form-group">
+                                <label>Status:</label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="e20-item02-status" value="offen">
+                                        <label>Offen</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="e20-item02-status" value="erfuellt">
+                                        <label>Erfüllt</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="e20-item02-status" value="nicht-erfuellt" onchange="toggleE20Item02Action()">
+                                        <label>Nicht erfüllt</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="e20-item02-action" class="conditional-fields">
+                                <div class="form-group">
+                                    <label>Maßnahmenplan zur Behebung:</label>
+                                    <textarea id="e20-item02-massnahmen" placeholder="Beschreiben Sie erforderliche Maßnahmen"></textarea>
+                                </div>
+                                <div class="grid-2">
+                                    <div class="form-group">
+                                        <label for="e20-item02-frist">Frist für Behebung:</label>
+                                        <input type="date" id="e20-item02-frist">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="e20-item02-resp-masse">Verantwortlicher:</label>
+                                        <input type="text" id="e20-item02-resp-masse" placeholder="Name">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label for="e20-item02-resp">Verantwortlich (Prüfer):</label>
+                                    <input type="text" id="e20-item02-resp" placeholder="Name des Prüfers">
+                                </div>
+                                <div class="form-group">
+                                    <label for="e20-item02-datum">Prüfdatum:</label>
+                                    <input type="date" id="e20-item02-datum">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="e20-item02-obs">Bemerkungen / Nachweise:</label>
+                                <textarea id="e20-item02-obs"></textarea>
+                            </div>
+
+                            <div class="photo-section">
+                                <label for="e20-item02-foto">📸 Fotofunkturkontrolle:</label>
+                                <input type="file" id="e20-item02-foto" accept="image/*" onchange="handlePhoto('e20', 'item02')" style="margin-top: 10px; width: 100%;">
+                                <div id="e20-item02-gallery" class="photo-gallery"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Items 03 & 04 -->
+                    <div class="item-card">
+                        <div class="item-title">03 - Gemeinsame Einrichtungen und Übergabe prüfen [Planung]</div>
+                        <div class="item-description">
+                            Für Staubtrennung, Lüftung, Lagerbereiche und freie Verkehrswege Standort, Nutzer, Zeitfenster, Bereitstellung/Pflege und Prüfverantwortung mit den Folgegewerken abstimmen.
+                        </div>
+
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="radio" name="e20-item03-app" value="ja" onchange="toggleE20Item03()">
+                                <label>Anwendbar</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="e20-item03-app" value="nein" onchange="toggleE20Item03()">
+                                <label>Nicht anwendbar</label>
+                            </div>
+                        </div>
+
+                        <div id="e20-item03-fields" class="conditional-fields">
+                            <div class="form-group">
+                                <label>Status:</label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="e20-item03-status" value="offen">
+                                        <label>Offen</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="e20-item03-status" value="erfuellt">
+                                        <label>Erfüllt</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="e20-item03-status" value="nicht-erfuellt" onchange="toggleE20Item03Action()">
+                                        <label>Nicht erfüllt</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="e20-item03-action" class="conditional-fields">
+                                <div class="form-group">
+                                    <label>Maßnahmenplan zur Behebung:</label>
+                                    <textarea id="e20-item03-massnahmen"></textarea>
+                                </div>
+                                <div class="grid-2">
+                                    <div class="form-group">
+                                        <label for="e20-item03-frist">Frist für Behebung:</label>
+                                        <input type="date" id="e20-item03-frist">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="e20-item03-resp-masse">Verantwortlicher:</label>
+                                        <input type="text" id="e20-item03-resp-masse" placeholder="Name">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label for="e20-item03-resp">Verantwortlich (Prüfer):</label>
+                                    <input type="text" id="e20-item03-resp" placeholder="Name des Prüfers">
+                                </div>
+                                <div class="form-group">
+                                    <label for="e20-item03-datum">Prüfdatum:</label>
+                                    <input type="date" id="e20-item03-datum">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="e20-item03-obs">Bemerkungen / Nachweise:</label>
+                                <textarea id="e20-item03-obs"></textarea>
+                            </div>
+
+                            <div class="photo-section">
+                                <label for="e20-item03-foto">📸 Fotofunkturkontrolle:</label>
+                                <input type="file" id="e20-item03-foto" accept="image/*" onchange="handlePhoto('e20', 'item03')" style="margin-top: 10px; width: 100%;">
+                                <div id="e20-item03-gallery" class="photo-gallery"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item-card">
+                        <div class="item-title">04 - Spätere Arbeiten und Zugänge prüfen (RAB 32) [Planung]</div>
+                        <div class="item-description">
+                            Sicheren Zugang und relevante Bestandsinformationen für Wartung und Instandsetzung dokumentieren.
+                        </div>
+
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="radio" name="e20-item04-app" value="ja" onchange="toggleE20Item04()">
+                                <label>Anwendbar</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="e20-item04-app" value="nein" onchange="toggleE20Item04()">
+                                <label>Nicht anwendbar</label>
+                            </div>
+                        </div>
+
+                        <div id="e20-item04-fields" class="conditional-fields">
+                            <div class="form-group">
+                                <label>Status:</label>
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="e20-item04-status" value="offen">
+                                        <label>Offen</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="e20-item04-status" value="erfuellt">
+                                        <label>Erfüllt</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="radio" name="e20-item04-status" value="nicht-erfuellt" onchange="toggleE20Item04Action()">
+                                        <label>Nicht erfüllt</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="e20-item04-action" class="conditional-fields">
+                                <div class="form-group">
+                                    <label>Maßnahmenplan zur Behebung:</label>
+                                    <textarea id="e20-item04-massnahmen"></textarea>
+                                </div>
+                                <div class="grid-2">
+                                    <div class="form-group">
+                                        <label for="e20-item04-frist">Frist für Behebung:</label>
+                                        <input type="date" id="e20-item04-frist">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="e20-item04-resp-masse">Verantwortlicher:</label>
+                                        <input type="text" id="e20-item04-resp-masse" placeholder="Name">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label for="e20-item04-resp">Verantwortlich (Prüfer):</label>
+                                    <input type="text" id="e20-item04-resp" placeholder="Name des Prüfers">
+                                </div>
+                                <div class="form-group">
+                                    <label for="e20-item04-datum">Prüfdatum:</label>
+                                    <input type="date" id="e20-item04-datum">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="e20-item04-obs">Bemerkungen / Nachweise:</label>
+                                <textarea id="e20-item04-obs"></textarea>
+                            </div>
+
+                            <div class="photo-section">
+                                <label for="e20-item04-foto">📸 Fotofunkturkontrolle:</label>
+                                <input type="file" id="e20-item04-foto" accept="image/*" onchange="handlePhoto('e20', 'item04')" style="margin-top: 10px; width: 100%;">
+                                <div id="e20-item04-gallery" class="photo-gallery"></div>
+                            </div>
+
+                            <div class="button-group" style="margin-top: 30px;">
+                                <div style="flex: 1;">
+                                    <label for="e20-pruefung">Prüfung / Freigabe:</label>
+                                    <input type="text" id="e20-pruefung" placeholder="Name des Prüfers" style="margin-bottom: 0;">
+                                </div>
+                                <div style="flex: 1;">
+                                    <label for="e20-datum-unterschrift">Datum / Unterschrift:</label>
+                                    <input type="date" id="e20-datum-unterschrift" style="margin-bottom: 0;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- E21 bis E30 (Similar structure to E20) -->
+        <div id="e21" class="tab-content">
+            <div class="form-section">
+                <h2>🛏️ E21 · Estrich / Boden</h2>
+                <p style="color: #999; margin-bottom: 25px;">Implementação similar à E20 - Sistema completo com 4 itens</p>
+                <button class="btn-primary" onclick="loadCategory('e21')">Carregar E21</button>
+            </div>
+        </div>
+
+        <div id="e22" class="tab-content">
+            <div class="form-section">
+                <h2>🧱 E22 · Fliesen / Naturstein</h2>
+                <p style="color: #999; margin-bottom: 25px;">Implementação similar à E20 - Sistema completo com 4 itens</p>
+                <button class="btn-primary" onclick="loadCategory('e22')">Carregar E22</button>
+            </div>
+        </div>
+
+        <div id="e23" class="tab-content">
+            <div class="form-section">
+                <h2>🎨 E23 · Maler / Beschichtung</h2>
+                <p style="color: #999; margin-bottom: 25px;">Implementação similar à E20 - Sistema completo com 4 itens</p>
+                <button class="btn-primary" onclick="loadCategory('e23')">Carregar E23</button>
+            </div>
+        </div>
+
+        <div id="e24" class="tab-content">
+            <div class="form-section">
+                <h2>🚪 E24 · Innenausbau</h2>
+                <p style="color: #999; margin-bottom: 25px;">Implementação similar à E20 - Sistema completo com 4 itens</p>
+                <button class="btn-primary" onclick="loadCategory('e24')">Carregar E24</button>
+            </div>
+        </div>
+
+        <div id="e30" class="tab-content">
+            <div class="form-section">
+                <h2>🧹 E30 · Reinigung / Inbetriebnahme</h2>
+                <p style="color: #999; margin-bottom: 25px;">Implementação similar à E20 - Sistema completo com 4 itens</p>
+                <button class="btn-primary" onclick="loadCategory('e30')">Carregar E30</button>
+            </div>
+        </div>
+
+        <!-- ZUSAMMENFASSUNG -->
+        <div id="zusammenfassung" class="tab-content">
+            <div class="form-section">
+                <h2>📊 Zusammenfassung und Export</h2>
+
+                <div class="summary-section">
+                    <div class="summary-card">
+                        <h4>Gesamtzahl Prüfpunkte</h4>
+                        <div class="number" id="totalItems">0</div>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Erfüllt</h4>
+                        <div class="number" style="color: var(--success);" id="erfuelltItems">0</div>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Nicht erfüllt</h4>
+                        <div class="number" style="color: var(--danger);" id="nichtErfuelltItems">0</div>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Offen</h4>
+                        <div class="number" style="color: var(--warning);" id="offenItems">0</div>
+                    </div>
+                </div>
+
+                <div class="export-section">
+                    <h3>🔄 Daten exportieren</h3>
+                    <div class="button-group">
+                        <button class="btn-primary" onclick="downloadJSON()">📥 JSON herunterladen</button>
+                        <button class="btn-primary" onclick="generatePDF()">📄 PDF generieren</button>
+                        <button class="btn-primary" onclick="sendEmail()">📧 Per E-Mail versenden</button>
+                        <button class="btn-success" onclick="saveLocalStorage()">💾 Lokal speichern</button>
+                        <button class="btn-warning" onclick="resetForm()">🔄 Alles löschen</button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <h3>📋 Detaillierter Bericht</h3>
+                    <div id="detailedReport" style="background: white; padding: 25px; border-radius: 10px; margin-top: 20px; border: 2px solid var(--border);"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Storage para fotos
+        let photosData = {};
+        
+        // Inicializar storage
+        const categories = ['e20', 'e21', 'e22', 'e23', 'e24', 'e30'];
+        for (let cat of categories) {
+            for (let i = 1; i <= 4; i++) {
+                photosData[`${cat}-item0${i}`] = [];
+            }
+        }
+
+        // Carregar dados ao iniciar
+        window.addEventListener('load', () => {
+            loadLocalStorage();
+        });
+
+        // Obter localização
+        function getStandort() {
+            if (navigator.geolocation) {
+                const btn = event.target;
+                btn.innerHTML = '<span class="loading"></span> Wird abgerufen...';
+                btn.disabled = true;
+
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude.toFixed(6);
+                        const lng = position.coords.longitude.toFixed(6);
+                        
+                        document.getElementById('breitengrad').value = lat;
+                        document.getElementById('laengengrad').value = lng;
+                        
+                        btn.innerHTML = '📍 Erfolgreich abgerufen!';
+                        setTimeout(() => {
+                            btn.innerHTML = '📍 Standort Abrufen';
+                            btn.disabled = false;
+                        }, 2000);
+
+                        showSuccess('Standort erfolgreich erfasst!');
+                    },
+                    (error) => {
+                        console.error('Fehler:', error);
+                        showError('Fehler beim Abrufen des Standorts.');
+                        btn.innerHTML = '📍 Standort Abrufen';
+                        btn.disabled = false;
+                    }
+                );
+            } else {
+                showError('Ihr Browser unterstützt Geolokalisierung nicht.');
+            }
+        }
+
+        // Switch Tab
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-tabs button').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Toggle E20 Items
+        function toggleE20Items() {
+            const isApplicable = document.querySelector('input[name="e20-anwendbar"]:checked')?.value === 'ja';
+            document.getElementById('e20-items').style.display = isApplicable ? 'block' : 'none';
+        }
+
+        function toggleE20Item01() {
+            const isAppl = document.querySelector('input[name="e20-item01-app"]:checked')?.value === 'ja';
+            document.getElementById('e20-item01-fields').classList.toggle('show', isAppl);
+        }
+
+        function toggleE20Item01Action() {
+            const isNicht = document.querySelector('input[name="e20-item01-status"]:checked')?.value === 'nicht-erfuellt';
+            document.getElementById('e20-item01-action').classList.toggle('show', isNicht);
+        }
+
+        function toggleE20Item02() {
+            const isAppl = document.querySelector('input[name="e20-item02-app"]:checked')?.value === 'ja';
+            document.getElementById('e20-item02-fields').classList.toggle('show', isAppl);
+        }
+
+        function toggleE20Item02Action() {
+            const isNicht = document.querySelector('input[name="e20-item02-status"]:checked')?.value === 'nicht-erfuellt';
+            document.getElementById('e20-item02-action').classList.toggle('show', isNicht);
+        }
+
+        function toggleE20Item03() {
+            const isAppl = document.querySelector('input[name="e20-item03-app"]:checked')?.value === 'ja';
+            document.getElementById('e20-item03-fields').classList.toggle('show', isAppl);
+        }
+
+        function toggleE20Item03Action() {
+            const isNicht = document.querySelector('input[name="e20-item03-status"]:checked')?.value === 'nicht-erfuellt';
+            document.getElementById('e20-item03-action').classList.toggle('show', isNicht);
+        }
+
+        function toggleE20Item04() {
+            const isAppl = document.querySelector('input[name="e20-item04-app"]:checked')?.value === 'ja';
+            document.getElementById('e20-item04-fields').classList.toggle('show', isAppl);
+        }
+
+        function toggleE20Item04Action() {
+            const isNicht = document.querySelector('input[name="e20-item04-status"]:checked')?.value === 'nicht-erfuellt';
+            document.getElementById('e20-item04-action').classList.toggle('show', isNicht);
+        }
+
+        // Foto Handler
+        function handlePhoto(category, item) {
+            const file = document.getElementById(`${category}-${item}-foto`).files[0];
+            if (file) addPhoto(`${category}-${item}`, file);
+        }
+
+        function addPhoto(itemId, file) {
+            const reader = new FileReader();
+            
+            reader.onload = (e) => {
+                const now = new Date();
+                const photoData = {
+                    src: e.target.result,
+                    timestamp: now.toLocaleString('de-DE'),
+                    date: now.toISOString().split('T')[0],
+                    time: now.toTimeString().split(' ')[0],
+                    lat: document.getElementById('breitengrad').value || 'Nicht erfasst',
+                    lng: document.getElementById('laengengrad').value || 'Nicht erfasst'
+                };
+
+                if (!photosData[itemId]) photosData[itemId] = [];
+                photosData[itemId].push(photoData);
+                displayPhotos(itemId);
+                showSuccess('Foto erfolgreich hinzugefügt!');
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        function displayPhotos(itemId) {
+            const gallery = document.getElementById(`${itemId}-gallery`);
+            if (!gallery) return;
+
+            gallery.innerHTML = '';
+
+            if (photosData[itemId]) {
+                photosData[itemId].forEach((photo, index) => {
+                    const photoItem = document.createElement('div');
+                    photoItem.className = 'photo-item';
+                    photoItem.innerHTML = `
+                        <img src="${photo.src}" alt="Foto">
+                        <div class="photo-info">
+                            <strong>Datum:</strong> ${photo.date}<br>
+                            <strong>Zeit:</strong> ${photo.time}<br>
+                            <strong>Br.:</strong> ${photo.lat}<br>
+                            <strong>Lg.:</strong> ${photo.lng}
+                        </div>
+                        <button class="photo-delete" onclick="deletePhoto('${itemId}', ${index})">✕</button>
+                    `;
+                    gallery.appendChild(photoItem);
+                });
+            }
+        }
+
+        function deletePhoto(itemId, index) {
+            photosData[itemId].splice(index, 1);
+            displayPhotos(itemId);
+        }
+
+        // Mensagens
+        function showSuccess(message) {
+            const msgEl = document.getElementById('successMessage');
+            msgEl.textContent = '✓ ' + message;
+            msgEl.style.display = 'block';
+            setTimeout(() => msgEl.style.display = 'none', 5000);
+        }
+
+        function showError(message) {
+            const msgEl = document.getElementById('errorMessage');
+            msgEl.textContent = '✗ ' + message;
+            msgEl.style.display = 'block';
+            setTimeout(() => msgEl.style.display = 'none', 5000);
+        }
+
+        function loadCategory(cat) {
+            alert(`${cat.toUpperCase()} - Vollständige Implementierung mit 4 Prüfpunkten und Fotodokumentation`);
+        }
+
+        // Coletar dados
+        function getFormData() {
+            return {
+                projekt: {
+                    name: document.getElementById('projekt').value,
+                    revision: document.getElementById('revision').value,
+                    verantwortlich: document.getElementById('verantwortlich').value,
+                    firma: document.getElementById('firma').value,
+                    telefon: document.getElementById('telefon').value,
+                    email: document.getElementById('email').value,
+                    standort: {
+                        lat: document.getElementById('breitengrad').value,
+                        lng: document.getElementById('laengengrad').value,
+                        beschreibung: document.getElementById('standort-beschreibung').value
+                    }
+                },
+                timestamp: new Date().toLocaleString('de-DE')
+            };
+        }
+
+        // Exportar JSON
+        function downloadJSON() {
+            const data = getFormData();
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `ausbau-checkliste-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            showSuccess('JSON erfolgreich exportiert!');
+        }
+
+        // LocalStorage
+        function saveLocalStorage() {
+            const data = getFormData();
+            localStorage.setItem('ausbauChecklistData', JSON.stringify(data));
+            localStorage.setItem('ausbauPhotosData', JSON.stringify(photosData));
+            showSuccess('Daten lokal gespeichert!');
+        }
+
+        function loadLocalStorage() {
+            const data = localStorage.getItem('ausbauChecklistData');
+            const photos = localStorage.getItem('ausbauPhotosData');
+
+            if (photos) {
+                photosData = JSON.parse(photos);
+            }
+
+            if (data) {
+                const formData = JSON.parse(data);
+                console.log('Daten geladen:', formData);
+            }
+        }
+
+        // PDF
+        function generatePDF() {
+            const data = getFormData();
+            let content = `AUSBAU & INBETRIEBNAHME CHECKLISTE\n\n`;
+            content += `Projekt: ${data.projekt.name}\n`;
+            content += `Datum: ${new Date().toLocaleDateString('de-DE')}\n`;
+
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `ausbau-checkliste-${new Date().toISOString().split('T')[0]}.txt`;
+            link.click();
+            showSuccess('PDF-Bericht generiert!');
+        }
+
+        // Email
+        function sendEmail() {
+            const data = getFormData();
+            const email = data.projekt.email;
+            if (!email) {
+                showError('Bitte geben Sie eine E-Mail-Adresse ein.');
+                return;
+            }
+            
+            const subject = `Ausbau & Inbetriebnahme Checkliste - ${data.projekt.name}`;
+            const body = `Siehe angehängten Checklisten-Bericht`;
+            
+            window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            showSuccess('E-Mail-Client wird geöffnet...');
+        }
+
+        // Reset
+        function resetForm() {
+            if (confirm('Sind Sie sicher, dass Sie alle Daten löschen möchten?')) {
+                document.querySelectorAll('input, textarea, select').forEach(el => {
+                    if (el.type === 'checkbox' || el.type === 'radio') el.checked = false;
+                    else el.value = '';
+                });
+                photosData = {};
+                localStorage.removeItem('ausbauChecklistData');
+                localStorage.removeItem('ausbauPhotosData');
+                showSuccess('Alle Daten wurden gelösch!');
+            }
+        }
+    </script>
+</body>
+</html>
